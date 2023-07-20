@@ -1,4 +1,6 @@
-import PaginationRounded from "./components/pagination";
+import Pagination from "./components/pagination/pagination";
+import Navbar from "./components/Navbar/Navbar";
+import "./App.scss";
 import { QueryClient, QueryClientProvider } from "react-query";
 function App() {
   const queryClient = new QueryClient();
@@ -6,7 +8,8 @@ function App() {
     <>
       {" "}
       <QueryClientProvider client={queryClient}>
-        <PaginationRounded />
+        <Navbar />
+        <Pagination />
       </QueryClientProvider>
     </>
   );

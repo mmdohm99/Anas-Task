@@ -1,0 +1,20 @@
+$back-ground: #f4f2de;
+$base-color: #a1ccd1;
+$base-color2: #f4f2de;
+$basic-color: #7c9d96;
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+}
+@mixin clickable {
+  cursor: pointer;
+  padding: 3px;
+  border-radius: 3px;
+  &:hover {
+    background-color: $base-color2;
+    color: $basic-color;
+
+    border-radius: 3px;
+  }
+}

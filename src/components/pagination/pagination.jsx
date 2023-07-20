@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
-import List from "../List";
-
+import React, { useEffect, useState, useCallback } from "react";
+import List from "../Table/Table";
+import "./pagination.scss";
 import { useQuery } from "react-query";
 import { getData } from "../../myApi";
+import Loading from "../Loading/Loading";
 export default function PaginationRounded() {
+  const headers = ["Alpha twocode", "Country", "Domains", "Name", "Web pages"];
   const { data, isLoading } = useQuery("todos", getData);
-
+  const [hidePagination, setHidePagination] = useState(false);
   const [items, setItems] = useState([]);
 
   const [firstPages, setFirstPages] = useState([]);
@@ -15,14 +15,17 @@ export default function PaginationRounded() {
   const [startLatsItem, setStartLastItem] = useState(3);
   const [lastPages, setLastPages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageItems, setPageItems] = useState(10);
+
   const [pagesN, setPagesN] = useState([]);
 
-  const selectPage = (item) => {
-    setCurrentPage(item);
-    setItems(data.slice(Math.ceil((item - 1) * 10), Math.ceil(item * 10)));
-  };
-  const NextTenPages = () => {
+  const selectPage = useCallback(
+    (item) => {
+      setCurrentPage(item);
+      setItems(data.slice(Math.ceil((item - 1) * 10), Math.ceil(item * 10)));
+    },
+    [data]
+  );
+  const NextTenPages = useCallback(() => {
     if (currentPage < 217) {
       setCurrentPage((old) => old + 10);
       setItems(
@@ -32,10 +35,9 @@ export default function PaginationRounded() {
         )
       );
     }
-  };
-  const prevPage = () => {
+  }, [currentPage, data]);
+  const prevPage = useCallback(() => {
     if (currentPage > 1) {
-      //   setFirstPages((old) => [...old?.map((ele) => ele - 1)]);
       setCurrentPage((old) => old - 1);
       setItems(
         data.slice(
@@ -46,8 +48,8 @@ export default function PaginationRounded() {
       setStartItem((old) => old - 1);
       setStartLastItem((old) => old - 1);
     }
-  };
-  const NextPage = () => {
+  }, [currentPage, data]);
+  const NextPage = useCallback(() => {
     if (currentPage < 227) {
       setCurrentPage((old) => old + 1);
       setItems(
@@ -57,8 +59,8 @@ export default function PaginationRounded() {
         )
       );
     }
-  };
-  const prevTenPages = () => {
+  }, [currentPage, data]);
+  const prevTenPages = useCallback(() => {
     if (currentPage > 10) {
       setCurrentPage((old) => old - 10);
       setItems(
@@ -68,8 +70,8 @@ export default function PaginationRounded() {
         )
       );
     }
-  };
-  console.log(currentPage);
+  }, [currentPage, data]);
+
   useEffect(() => {
     if (isLoading === false) {
       setItems(data.slice(0, 10));
@@ -90,24 +92,55 @@ export default function PaginationRounded() {
       }
     }
   }, [currentPage, firstPages, isLoading]);
-  console.log(items);
-  console.log(data);
-  //   console.log(firstPages);
-  //   console.log(!firstPages?.includes(currentPage + 1));
+
   return (
     <>
-      <List items={items} />
-      <div onClick={prevTenPages}>prev 10</div>
-      <div onClick={prevPage}>prev </div>
-      {firstPages.map((item) => (
-        <div onClick={() => selectPage(item)}>{item}</div>
-      ))}
-      <div>{currentPage}</div>
-      {lastPages.map((item) => (
-        <div onClick={() => selectPage(item)}>{item}</div>
-      ))}
-      <div onClick={NextTenPages}>Next 10</div>
-      <div onClick={NextPage}>Next </div>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <List
+            items={items}
+            headers={headers}
+            setHidePagination={setHidePagination}
+          />
+          {hidePagination ? (
+            ""
+          ) : (
+            <div className="paginationContainer">
+              <div className="paginationBox">
+                <div className="PrevBox">
+                  {" "}
+                  <div onClick={prevTenPages}>{"<<"}</div>
+                  <div onClick={prevPage}>{"<"}</div>
+                </div>
+                <div className="firstBox">
+                  {" "}
+                  {firstPages.map((item, i) => (
+                    <div key={i} onClick={() => selectPage(item)}>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="CurrBox">{currentPage}</div>
+                <div className="lastBox">
+                  {lastPages.map((item, i) => (
+                    <div key={i} onClick={() => selectPage(item)}>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="NextBox">
+                  <div onClick={NextPage}>{">"} </div>
+                  <div onClick={NextTenPages}>{">>"}</div>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </>
   );
 }

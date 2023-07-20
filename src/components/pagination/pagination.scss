@@ -1,0 +1,57 @@
+@import "../../variables";
+
+.paginationContainer {
+  @include flex-center;
+  gap: 5px;
+  padding: 15px;
+}
+.paginationBox {
+  @include flex-center;
+  align-items: center;
+  color: $base-color2;
+  background-color: $basic-color;
+  height: 30px;
+  padding: 10px;
+  padding-bottom: 15px;
+  width: max-content;
+  border-radius: 10px;
+}
+.NextBox {
+  @include flex-center;
+  margin-left: 10px;
+  gap: 10px;
+  div {
+    @include clickable;
+  }
+}
+.PrevBox {
+  @include flex-center;
+  margin-right: 10px;
+  gap: 10px;
+  div {
+    @include clickable;
+  }
+}
+.CurrBox {
+  @include flex-center;
+  margin-inline: 10px;
+  background-color: $base-color2;
+  color: $basic-color;
+  padding: 5px;
+  border-radius: 3px;
+}
+.lastBox {
+  @include flex-center;
+  gap: 10px;
+  div {
+    @include clickable;
+  }
+}
+.firstBox {
+  @include flex-center;
+  gap: 10px;
+
+  div {
+    @include clickable;
+  }
+}
