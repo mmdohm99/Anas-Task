@@ -26,7 +26,7 @@ export default function PaginationRounded() {
     [data]
   );
   const NextTenPages = useCallback(() => {
-    if (currentPage < 217) {
+    if (currentPage < pagesN?.length - 10) {
       setCurrentPage((old) => old + 10);
       setItems(
         data.slice(
@@ -35,7 +35,7 @@ export default function PaginationRounded() {
         )
       );
     }
-  }, [currentPage, data]);
+  }, [currentPage, data, pagesN]);
   const prevPage = useCallback(() => {
     if (currentPage > 1) {
       setCurrentPage((old) => old - 1);
@@ -50,7 +50,7 @@ export default function PaginationRounded() {
     }
   }, [currentPage, data]);
   const NextPage = useCallback(() => {
-    if (currentPage < 227) {
+    if (currentPage < pagesN?.length - 1) {
       setCurrentPage((old) => old + 1);
       setItems(
         data.slice(
@@ -59,7 +59,7 @@ export default function PaginationRounded() {
         )
       );
     }
-  }, [currentPage, data]);
+  }, [currentPage, data, pagesN]);
   const prevTenPages = useCallback(() => {
     if (currentPage > 10) {
       setCurrentPage((old) => old - 10);
@@ -92,7 +92,8 @@ export default function PaginationRounded() {
       }
     }
   }, [currentPage, firstPages, isLoading]);
-
+  console.log(pagesN);
+  console.log(currentPage);
   return (
     <>
       {isLoading ? (
